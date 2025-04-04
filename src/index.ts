@@ -9,7 +9,6 @@ const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'milk'}]
 app.get('/users', (req: Request, res: Response) => {
     res.send(users)
 })
-
 app.get('/users/:id', (req: Request, res: Response) => {
     const user = users.find(x => x.id === req.params.id)
     if (user) {
@@ -35,6 +34,16 @@ app.get('/products/:id', (req: Request, res: Response) => {
     } else {
         res.send(404)
     }
+})
+app.delete('/products/:id', (req: Request, res: Response) => {
+    for (let i = 0; i < products.length; i++) {
+        if (products[i].id === +req.params.id) {
+            products.splice(i, 1)
+            res.send(204)
+            return
+        }
+    }
+    res.send(404)
 })
 
 app.listen(port, () => {
