@@ -1,22 +1,12 @@
 import express, {Request, Response} from 'express'
+import bodyParser from 'body-parser'
 
 const app = express()
 const port = 3000
 
-const users = [{id: '1', name: 'Dima'}, {id: '2', name: 'Ivan'}]
 const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'milk'}]
 
-app.get('/users', (req: Request, res: Response) => {
-    res.send(users)
-})
-app.get('/users/:id', (req: Request, res: Response) => {
-    const user = users.find(x => x.id === req.params.id)
-    if (user) {
-        res.send(user)
-    } else {
-        res.send(404)
-    }
-})
+app.use(bodyParser.json())
 
 app.get('/products', (req: Request, res: Response) => {
     if (req.query.title) {
@@ -44,6 +34,21 @@ app.delete('/products/:id', (req: Request, res: Response) => {
         }
     }
     res.send(404)
+})
+app.post('/products', (req: Request, res: Response) => {
+    const newId = products[products.length - 1].id + 1
+    const newProduct = {id: newId, title: req.body.title}
+    products.push(newProduct)
+    res.status(201).send(newProduct)
+})
+app.put('/products/:id', (req: Request, res: Response) => {
+    let product = products.find(x => x.id === +req.params.id)
+    if (product) {
+        product.title = req.body.title
+        res.send(product)
+    } else {
+        res.send(404)
+    }
 })
 
 app.listen(port, () => {
