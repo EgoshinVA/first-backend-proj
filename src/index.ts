@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 
 const users = [{id: '1', name: 'Dima'}, {id: '2', name: 'Ivan'}]
-const products = [{title: 'tomato'}, {title: 'milk'}]
+const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'milk'}]
 
 app.get('/users', (req: Request, res: Response) => {
     res.send(users)
@@ -20,10 +20,16 @@ app.get('/users/:id', (req: Request, res: Response) => {
 })
 
 app.get('/products', (req: Request, res: Response) => {
-    res.send(products)
+    if (req.query.title) {
+        const searchString = req.query.title.toString()
+        res.send(products.filter(p => p.title.includes(searchString)))
+    } else {
+        res.send(products)
+    }
+
 })
-app.get('/products/:productTitle', (req: Request, res: Response) => {
-    let product = products.find(product => product.title === req.params.productTitle)
+app.get('/products/:id', (req: Request, res: Response) => {
+    let product = products.find(product => product.id === +req.params.id)
     if (product) {
         res.send(product)
     } else {
