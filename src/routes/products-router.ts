@@ -1,8 +1,8 @@
 import {Request, Response, Router} from "express";
 import {productsRepository} from "../repositories/products-repository";
-import {authGuardMiddleware} from "../index";
 import {body} from "express-validator";
 import {inputValidationMiddleware} from "../middlewares/inputValidationMiddleware";
+import {authGuardMiddleware} from "../middlewares/authGuardMiddleware";
 
 export const productsRouter = Router({})
 const titleValidation = body('title').trim().isLength({min: 3, max: 15}).escape()
