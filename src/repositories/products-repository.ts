@@ -1,9 +1,9 @@
 const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'milk'}]
 
 export const productsRepository = {
-    findProducts(searchTerm: string | null) {
-        if (searchTerm) {
-            return products.filter(p => p.title.includes(searchTerm))
+    findProducts(title: string | null | undefined) {
+        if (title) {
+            return products.filter(p => p.title.includes(title))
         } else {
             return products
         }

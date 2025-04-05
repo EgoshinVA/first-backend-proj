@@ -4,7 +4,7 @@ import {productsRepository} from "../repositories/products-repository";
 export const productsRouter = Router({})
 
 productsRouter.get('', (req: Request, res: Response) => {
-    const foundProducts = productsRepository.findProducts(req.params.title);
+    const foundProducts = productsRepository.findProducts(req.query.title?.toString());
     res.send(foundProducts)
 })
 productsRouter.get('/:id', (req: Request, res: Response) => {
