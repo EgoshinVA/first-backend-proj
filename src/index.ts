@@ -6,11 +6,10 @@ const app = express()
 const port = 3000
 
 app.use(bodyParser.json())
-app.use(authGuardMiddleware)
 app.use('/products', productsRouter)
 
-function authGuardMiddleware(req: Request, res: Response, next: NextFunction) {
-    if (req.query.token === '123') {
+export function authGuardMiddleware(req: Request, res: Response, next: NextFunction) {
+    if (req.body.token === '123') {
         next()
     } else {
         res.send(401)
