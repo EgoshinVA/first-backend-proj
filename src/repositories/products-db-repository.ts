@@ -1,11 +1,9 @@
-import {client} from "../db/mongo-db";
+import {productsCollection} from "../db/mongo-db";
 
 export type ProductType = {
     id: number
     title: string
 }
-
-const productsCollection = client.db('shop').collection<ProductType>('products')
 
 export const productsRepository = {
     async findProducts(title: string | null | undefined): Promise<ProductType[]> {
