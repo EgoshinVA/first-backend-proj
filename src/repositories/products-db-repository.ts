@@ -9,11 +9,11 @@ const productsCollection = client.db('shop').collection<ProductType>('products')
 
 export const productsRepository = {
     async findProducts(title: string | null | undefined): Promise<ProductType[]> {
+        const filter: any = {}
         if (title) {
-            return productsCollection.find({title: {$regex: title}}).toArray()
-        } else {
-            return productsCollection.find({}).toArray()
+            filter.title = {$regex: title}
         }
+        return productsCollection.find(filter).toArray()
     },
     async findProductById(id: number): Promise<ProductType | null> {
         let product: ProductType | null = await productsCollection.findOne({id})
