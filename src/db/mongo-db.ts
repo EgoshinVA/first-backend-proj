@@ -1,5 +1,6 @@
 import {MongoClient} from "mongodb";
-import {ProductType} from "../repositories/products-db-repository";
+
+import {ProductType} from "../types/product-types";
 
 const mongoUri = process.env.MONGO_URI || "mongodb://0.0.0.0:27017/?maxPoolSize=20&w=majority" // в env будет другая строка с паролем от бд
 

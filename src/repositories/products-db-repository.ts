@@ -1,9 +1,5 @@
 import {productsCollection} from "../db/mongo-db";
-
-export type ProductType = {
-    id: number
-    title: string
-}
+import {ProductType} from "../types/product-types";
 
 export const productsRepository = {
     async findProducts(title: string | null | undefined): Promise<ProductType[]> {
