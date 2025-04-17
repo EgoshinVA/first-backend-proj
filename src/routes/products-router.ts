@@ -1,5 +1,5 @@
 import {Request, Response, Router} from "express";
-import {productsRepository, ProductType} from "../repositories/products-repository";
+import {productsRepository, ProductType} from "../repositories/products-db-repository";
 import {body} from "express-validator";
 import {inputValidationMiddleware} from "../middlewares/inputValidationMiddleware";
 import {authGuardMiddleware} from "../middlewares/authGuardMiddleware";
@@ -12,7 +12,7 @@ productsRouter.get('', async (req: Request, res: Response) => {
     res.send(foundProducts)
 })
 productsRouter.get('/:id', async (req: Request, res: Response) => {
-    const product: ProductType | undefined = await productsRepository.findProductById(+req.params.id)
+    const product: ProductType | null = await productsRepository.findProductById(+req.params.id)
     if (product) {
         res.send(product)
     } else {
@@ -34,7 +34,7 @@ productsRouter.post('', authGuardMiddleware, titleValidation, inputValidationMid
 productsRouter.put('/:id', authGuardMiddleware, titleValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
     const isUpdated: boolean = await productsRepository.updateProduct(+req.params.id, req.body.title)
     if (isUpdated) {
-        res.send(productsRepository.findProductById(+req.params.id))
+        res.send(await productsRepository.findProductById(+req.params.id))
     } else {
         res.send(404)
     }
