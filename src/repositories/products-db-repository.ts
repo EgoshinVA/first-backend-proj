@@ -5,16 +5,18 @@ export type ProductType = {
     title: string
 }
 
+const productsCollection = client.db('shop').collection<ProductType>('products')
+
 export const productsRepository = {
     async findProducts(title: string | null | undefined): Promise<ProductType[]> {
         if (title) {
-            return client.db('shop').collection<ProductType>('products').find({title: {$regex: title}}).toArray()
+            return productsCollection.find({title: {$regex: title}}).toArray()
         } else {
-            return client.db('shop').collection<ProductType>('products').find({}).toArray()
+            return productsCollection.find({}).toArray()
         }
     },
     async findProductById(id: number): Promise<ProductType | null> {
-        let product: ProductType | null = await client.db('shop').collection<ProductType>('products').findOne({id})
+        let product: ProductType | null = await productsCollection.findOne({id})
         if (product) {
             return product
         } else {
@@ -26,15 +28,15 @@ export const productsRepository = {
             id: +(new Date()),
             title
         }
-        await client.db('shop').collection<ProductType>('products').insertOne(newProduct)
+        await productsCollection.insertOne(newProduct)
         return newProduct
     },
     async updateProduct(id: number, title: string): Promise<boolean> {
-        const result = await client.db('shop').collection<ProductType>('products').updateOne({id}, {$set: {title}})
+        const result = await productsCollection.updateOne({id}, {$set: {title}})
         return result.matchedCount === 1
     },
     async deleteProduct(id: number): Promise<boolean> {
-        const result = await client.db('shop').collection<ProductType>('products').deleteOne({id})
+        const result = await productsCollection.deleteOne({id})
         return result.deletedCount === 1
     }
 }
