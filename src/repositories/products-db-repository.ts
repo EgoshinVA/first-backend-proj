@@ -17,13 +17,9 @@ export const productsRepository = {
             return null
         }
     },
-    async createProduct(title: string): Promise<ProductType> {
-        const newProduct = {
-            id: +(new Date()),
-            title
-        }
-        await productsCollection.insertOne(newProduct)
-        return newProduct
+    async createProduct(product: ProductType): Promise<ProductType> {
+        await productsCollection.insertOne(product)
+        return product
     },
     async updateProduct(id: number, title: string): Promise<boolean> {
         const result = await productsCollection.updateOne({id}, {$set: {title}})
